@@ -50,8 +50,15 @@ class TodoListViewController: UITableViewController {
     }
     
     //MARK - TableView Delegate Methods
+    // When user selects the cell at the specific indexPath
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        
+        // remove item from current item array
+//        itemArray.remove(at: indexPath.row)
+//        // remove data from permanent store
+//        context.delete(itemArray[indexPath.row])
+        
+        
         // sets the opposite. True becomes False. False becomes True
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
 
@@ -109,6 +116,7 @@ class TodoListViewController: UITableViewController {
         } catch {
             print("Erro saving context \(error)")
         }
+        // reload the table view
         self.tableView.reloadData()
     }
     
