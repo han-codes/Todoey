@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class TodoListViewController: UITableViewController {
     
@@ -20,7 +21,8 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(dataFilePath)
+//        print(dataFilePath)
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist"))
 
         loadItems()
     }
@@ -55,7 +57,7 @@ class TodoListViewController: UITableViewController {
 
         saveItems()
 
-        //         will remove the grey background when a specific row is selected.
+        // will remove the grey background when a specific row is selected.
         tableView.deselectRow(at: indexPath, animated: true)
 
     }
@@ -73,8 +75,10 @@ class TodoListViewController: UITableViewController {
 
             
             // context is the view context of persistentContainer in AppDelegate.swift
+            // Getting object of AppDelegate
             let newItem = Item(context: self.context)
             newItem.title = textField.text!
+            newItem.done = false        // default value for done, since it's not an optional in our database
             
             // What will happen once user clicks Add Item button on our UIAlert
             self.itemArray.append(newItem)   // will never equal nil
@@ -97,8 +101,9 @@ class TodoListViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    //MARK - Model Manipulation Methods
+    
     func saveItems() {
-        
         do {
             try context.save()
         } catch {
@@ -107,16 +112,16 @@ class TodoListViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
+    // Reads item from Item class and fetches it with context
     func loadItems() {
-        if let data = try? Data(contentsOf: dataFilePath!) {
-            let decoder = PropertyListDecoder()
-            do {
-                itemArray = try decoder.decode([Item].self, from: data)
-            } catch {
-                print("Error decoding item array, \(error)")
-            }
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        do {
+            itemArray = try context.fetch(request)
+        } catch {
+            print("Error fetching data from context \(error)")
         }
-    }
+        
+    }    
     
 }
 
