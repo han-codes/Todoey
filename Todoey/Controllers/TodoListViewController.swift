@@ -11,6 +11,8 @@ import CoreData
 
 class TodoListViewController: UITableViewController {
     
+//    @IBOutlet weak var searchBar: UISearchBar!
+    
     // array of item objects
     var itemArray = [Item]()
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
@@ -21,9 +23,12 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        print("hello")
 //        print(dataFilePath)
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist"))
-
+//        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist"))
+        
+//        searchBar.delegate = self
+        
         loadItems()
     }
 
@@ -49,7 +54,7 @@ class TodoListViewController: UITableViewController {
         return cell
     }
     
-    //MARK - TableView Delegate Methods
+    //MARK: - TableView Delegate Methods
     // When user selects the cell at the specific indexPath
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -69,7 +74,7 @@ class TodoListViewController: UITableViewController {
 
     }
  
-    //MARK - Add New Items
+    //MARK: - Add New Items
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
@@ -108,13 +113,13 @@ class TodoListViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    //MARK - Model Manipulation Methods
+    //MARK: - Model Manipulation Methods
     
     func saveItems() {
         do {
             try context.save()
         } catch {
-            print("Erro saving context \(error)")
+            print("Error saving context \(error)")
         }
         // reload the table view
         self.tableView.reloadData()
@@ -129,8 +134,19 @@ class TodoListViewController: UITableViewController {
             print("Error fetching data from context \(error)")
         }
         
-    }    
-    
+    }
+}
+
+//MARK: - Search bar methods
+extension TodoListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//        searchBar.delegate = self
+        // query the database
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        // specify what the query will be
+        
+        print(searchBar.text!)
+    }
 }
 
 

@@ -17,9 +17,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="nfM-QF-Sa4">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="MQA-13-4jd" id="sVV-67-5eQ"/>
+                            </connections>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ToDoItemCell" id="Vc0-bY-N36">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Vc0-bY-N36" id="SFj-m6-S9F">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -29,7 +37,7 @@
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="MQA-13-4jd" id="Dm9-nC-bmS"/>
-                            <outlet property="delegate" destination="MQA-13-4jd" id="dXH-Hv-XKp"/>
+                            <outlet property="delegate" destination="MQA-13-4jd" id="qIP-qL-g0U"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Todoey" id="Ygz-1f-MQe">
