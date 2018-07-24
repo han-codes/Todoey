@@ -12,6 +12,7 @@ import CoreData
 class TodoListViewController: UITableViewController {
     
 //    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     // array of item objects
     var itemArray = [Item]()
@@ -27,8 +28,7 @@ class TodoListViewController: UITableViewController {
 //        print(dataFilePath)
 //        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist"))
         
-//        searchBar.delegate = self
-        
+        searchBar.delegate = self
         loadItems()
     }
 
@@ -140,11 +140,17 @@ class TodoListViewController: UITableViewController {
 //MARK: - Search bar methods
 extension TodoListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        searchBar.delegate = self
+        
         // query the database
         let request : NSFetchRequest<Item> = Item.fetchRequest()
         // specify what the query will be
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         
+        request.predicate = predicate
+        
+//        let sortDescriptr = NSSortDescriptor(key: <#T##String?#>, ascending: <#T##Bool#>)
+        
+//        request.sortDescriptors = [sortDescriptr]
         print(searchBar.text!)
     }
 }
