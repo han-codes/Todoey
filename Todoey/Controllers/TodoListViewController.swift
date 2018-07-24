@@ -11,7 +11,6 @@ import CoreData
 
 class TodoListViewController: UITableViewController {
     
-//    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var searchBar: UISearchBar!
     
     // array of item objects
@@ -141,16 +140,28 @@ class TodoListViewController: UITableViewController {
 extension TodoListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        // query the database
-        let request : NSFetchRequest<Item> = Item.fetchRequest()
-        // specify what the query will be
+        // requests the query fetch requests
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        
+        // filter for our query
         let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         
+        // add our query to the request
         request.predicate = predicate
         
-//        let sortDescriptr = NSSortDescriptor(key: <#T##String?#>, ascending: <#T##Bool#>)
+        // sort the data we get back from database in any order we want
+        let sortDescriptr = NSSortDescriptor(key: "title", ascending: true)
         
-//        request.sortDescriptors = [sortDescriptr]
+        request.sortDescriptors = [sortDescriptr]
+        
+        do {
+            itemArray = try context.fetch(request)
+        } catch {
+            print("Error fetching data from context \(error)")
+        }
+        
+        tableView.reloadData()
+        
         print(searchBar.text!)
     }
 }
