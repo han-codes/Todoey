@@ -28,6 +28,7 @@ class TodoListViewController: UITableViewController {
 //        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist"))
         
         searchBar.delegate = self
+        
         loadItems()
     }
 
@@ -125,14 +126,14 @@ class TodoListViewController: UITableViewController {
     }
     
     // Reads item from Item class and fetches it with context
-    func loadItems() {
-        let request: NSFetchRequest<Item> = Item.fetchRequest()
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+//        let request: NSFetchRequest<Item> = Item.fetchRequest()
         do {
             itemArray = try context.fetch(request)
         } catch {
             print("Error fetching data from context \(error)")
         }
-        
+        tableView.reloadData()
     }
 }
 
@@ -143,26 +144,15 @@ extension TodoListViewController: UISearchBarDelegate {
         // requests the query fetch requests
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         
-        // filter for our query
-        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-        
-        // add our query to the request
-        request.predicate = predicate
+        // filter for our query and add query to the request
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         
         // sort the data we get back from database in any order we want
-        let sortDescriptr = NSSortDescriptor(key: "title", ascending: true)
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
-        request.sortDescriptors = [sortDescriptr]
+        // fetch the result and reloads the data for our view
+        loadItems(with: request)
         
-        do {
-            itemArray = try context.fetch(request)
-        } catch {
-            print("Error fetching data from context \(error)")
-        }
-        
-        tableView.reloadData()
-        
-        print(searchBar.text!)
     }
 }
 
