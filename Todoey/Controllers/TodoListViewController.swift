@@ -152,7 +152,22 @@ extension TodoListViewController: UISearchBarDelegate {
         
         // fetch the result and reloads the data for our view
         loadItems(with: request)
-        
+    }
+    
+    // when text is changed in search bar
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // when there is no text in the saerch bar
+        if searchBar.text?.count == 0 {
+            loadItems()     // fetches all items in our persistent store
+            
+            
+            // to dismiss keyboard and cursor on Main thread asynchronously
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+            
+            
+        }
     }
 }
 
