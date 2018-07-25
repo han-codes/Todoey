@@ -84,8 +84,6 @@ class TodoListViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             
-
-            
             // context is the view context of persistentContainer in AppDelegate.swift
             // Getting object of AppDelegate
             let newItem = Item(context: self.context)
