@@ -55,6 +55,7 @@ class TodoListViewController: UITableViewController {
     }
     
     //MARK: - TableView Delegate Methods
+    
     // When user selects the cell at the specific indexPath
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
