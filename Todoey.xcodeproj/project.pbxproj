@@ -80,8 +80,8 @@
 		AEB0EABE20E84D3600D125FD /* Data Model */ = {
 			isa = PBXGroup;
 			children = (
-				AE71BED2210CE12100DF1FE8 /* Item.swift */,
 				AE71BED4210CE13100DF1FE8 /* Category.swift */,
+				AE71BED2210CE12100DF1FE8 /* Item.swift */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";

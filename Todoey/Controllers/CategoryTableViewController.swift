@@ -7,9 +7,12 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class CategoryTableViewController: UITableViewController {
+    
+    // declare a Realm
+    let realm = try! Realm()
     
     // Array of NSObjects
     var categoryArray = [Category]()
@@ -63,9 +66,11 @@ class CategoryTableViewController: UITableViewController {
     
     // Mark: - Data Manipulation Methods
     
-    func saveCategories() {
+    func save(category: Category) {
         do {
-            try context.save()
+            try realm.write {
+                realm.add(category)
+            }
         } catch {
             print("Error saving context \(error)")
         }
@@ -76,16 +81,16 @@ class CategoryTableViewController: UITableViewController {
     // Read data from context
     func loadCategories() {
         // fetch the request
-        let request : NSFetchRequest<Category> = Category.fetchRequest()
-        
-        do {
-            // category array will be the fetched request from context
-            categoryArray = try context.fetch(request)
-        } catch {
-            print("Error loading categories \(error)")
-        }
-        
-        tableView.reloadData()
+//        let request : NSFetchRequest<Category> = Category.fetchRequest()
+//        
+//        do {
+//            // category array will be the fetched request from context
+//            categoryArray = try context.fetch(request)
+//        } catch {
+//            print("Error loading categories \(error)")
+//        }
+//        
+//        tableView.reloadData()
         
     }
     // MARK: - Add New Categories
@@ -98,12 +103,12 @@ class CategoryTableViewController: UITableViewController {
         // the button
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
-            let newCategory = Category(context: self.context)
-            newCategory.name = textField.text
+            let newCategory = Category()
+            newCategory.name = textField.text!
             
             self.categoryArray.append(newCategory)
             
-            self.saveCategories()
+            self.save(category: newCategory)
         }
         
         alert.addAction(action)

@@ -7,3 +7,10 @@
 //
 
 import Foundation
+import RealmSwift
+
+class Category: Object {
+    @objc dynamic var name: String = ""
+    // make a relationship. Array of Items
+    let items = List<Item>()
+}
