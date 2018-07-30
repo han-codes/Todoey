@@ -7,14 +7,17 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class TodoListViewController: UITableViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
     // array of item objects
-    var itemArray = [Item]()
+    var itemArray : Results<Item>?
+    
+    // new instance of Realm
+    let realm = try! Realm()
     
     // when variable is set, load categories
     var selectedCategory : Category? {
@@ -23,10 +26,6 @@ class TodoListViewController: UITableViewController {
         }
     }
     
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
-    
-    // the AppDelegate.swift object
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -133,25 +132,12 @@ class TodoListViewController: UITableViewController {
     }
     
     // Reads item from Item class and fetches it with context
-//    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
-////        let request: NSFetchRequest<Item> = Item.fetchRequest()
-//
-//
-//        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
-//
-//        if let additionalPredicate = predicate {
-//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
-//        } else {
-//            request.predicate = categoryPredicate
-//        }
-//
-//        do {
-//            itemArray = try context.fetch(request)
-//        } catch {
-//            print("Error fetching data from context \(error)")
-//        }
-//        tableView.reloadData()
-//    }
+    func loadItems() {
+
+        itemArray = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
+        
+        tableView.reloadData()
+    }
 }
 
 //MARK: - Search bar methods
