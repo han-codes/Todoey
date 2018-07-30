@@ -18,7 +18,7 @@ class CategoryTableViewController: UITableViewController {
     var categories: Results<Category>?
     
     // Communicates w/ our persistent container
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +31,6 @@ class CategoryTableViewController: UITableViewController {
     
     // # of rows
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // if categories?.count is nil return 1
         return categories?.count ?? 1
     }
     
@@ -76,7 +75,7 @@ class CategoryTableViewController: UITableViewController {
             print("Error saving context \(error)")
         }
         // reload the table view
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     // Read data from context
