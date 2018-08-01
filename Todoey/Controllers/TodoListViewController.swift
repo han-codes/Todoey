@@ -72,10 +72,7 @@ class TodoListViewController: UITableViewController {
         if let item = todoItems?[indexPath.row] {
             do {
                 try realm.write {
-//                  item.done = !item.done
-                    
-                    // deletes the selected item object
-                    realm.delete(item)
+                  item.done = !item.done
                 }
             } catch {
                 print("Error saving done status, \(error)")
