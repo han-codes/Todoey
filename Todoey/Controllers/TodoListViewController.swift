@@ -30,7 +30,7 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        // the path for realm file
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist"))
         
 //        searchBar.delegate = self
@@ -72,19 +72,20 @@ class TodoListViewController: UITableViewController {
         if let item = todoItems?[indexPath.row] {
             do {
                 try realm.write {
-                item.done = !item.done
+//                  item.done = !item.done
+                    
+                    // deletes the selected item object
+                    realm.delete(item)
                 }
             } catch {
                 print("Error saving done status, \(error)")
             }
-            
         }
         
         tableView.reloadData()
 
         // will remove the grey background when a specific row is selected.
         tableView.deselectRow(at: indexPath, animated: true)
-
     }
  
     //MARK: - Add New Items
