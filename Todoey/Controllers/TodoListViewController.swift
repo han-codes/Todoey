@@ -53,6 +53,9 @@ class TodoListViewController: UITableViewController {
         
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
+            
+            // Ternary operator
+            // value = condition ? valueIfTrue : valueIfFalse
             cell.accessoryType = item.done ? .checkmark : .none
         } else {
             cell.textLabel?.text = "No Items Added"
@@ -66,16 +69,18 @@ class TodoListViewController: UITableViewController {
     // When user selects the cell at the specific indexPath
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // remove item from current item array
-//        todoItems.remove(at: indexPath.row)
-//        // remove data from permanent store
-//        context.delete(todoItems[indexPath.row])
+        if let item = todoItems?[indexPath.row] {
+            do {
+                try realm.write {
+                item.done = !item.done
+                }
+            } catch {
+                print("Error saving done status, \(error)")
+            }
+            
+        }
         
-        
-        // sets the opposite. True becomes False. False becomes True
-//        todoItems[indexPath.row].done = !todoItems[indexPath.row].done
-//
-//        saveItems()
+        tableView.reloadData()
 
         // will remove the grey background when a specific row is selected.
         tableView.deselectRow(at: indexPath, animated: true)
@@ -104,6 +109,7 @@ class TodoListViewController: UITableViewController {
                     print("Error saving new items, \(error)")
                 }
             }
+            // call datasource methods again
             self.tableView.reloadData()
         }
         
