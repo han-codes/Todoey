@@ -101,6 +101,7 @@ class TodoListViewController: UITableViewController {
                         // Create Item object
                         let newItem = Item()
                         newItem.title = textField.text!
+                        newItem.dateCreated = Date()
                         currentCategory.items.append(newItem)
                     }
                 } catch {
@@ -135,37 +136,29 @@ class TodoListViewController: UITableViewController {
 }
 
 //MARK: - Search bar methods
-//extension TodoListViewController: UISearchBarDelegate {
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//
-//        // requests the query fetch requests
-//        let request: NSFetchRequest<Item> = Item.fetchRequest()
-//
-//        // filter for our query and add query to the request
-//        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-//
-//        // sort the data we get back from database in any order we want
-//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//
-//        // fetch the result and reloads the data for our view
-//        loadItems(with: request, predicate: predicate)
-//    }
-//
-//    // when text is changed in search bar
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        // when there is no text in the saerch bar
-//        if searchBar.text?.count == 0 {
-//            loadItems()     // fetches all items in our persistent store
-//
-//
-//            // to dismiss keyboard and cursor on Main thread asynchronously
-//            DispatchQueue.main.async {
-//                searchBar.resignFirstResponder()
-//            }
-//
-//
-//        }
-//    }
-//}
+extension TodoListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+
+        // requests the query and filters it. sort by title and ascending
+        todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
+        
+        tableView.reloadData()
+    }
+
+    // when text is changed in search bar
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // when there is no text in the saerch bar
+        if searchBar.text?.count == 0 {
+            loadItems()     // fetches all items in our persistent store
+
+            // to dismiss keyboard and cursor on Main thread asynchronously
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+
+
+        }
+    }
+}
 
 
